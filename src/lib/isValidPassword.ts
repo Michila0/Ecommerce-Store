@@ -1,6 +1,6 @@
 
 export async function isValidPassword(password: string,  hashedPassword: string) {
-    // return (await hashPassword(password)) === hashedPassword
+    return (await hashPassword(password)) === hashedPassword
 }
 
 async function hashPassword(password: string) {
@@ -9,5 +9,5 @@ async function hashPassword(password: string) {
         new TextEncoder().encode(password)
     )
 
-    // return Buffer.from(arrayBuffer).toString("base64")
+    return Buffer.from(arrayBuffer).toString("base64")
 }

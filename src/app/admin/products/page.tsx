@@ -6,7 +6,14 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import db from "@/db/db";
 import {CheckCircle2, MoreVertical, XCircle} from "lucide-react";
 import {formatCurrency, formatNumber} from "@/lib/formatters";
-import {DropdownMenu} from "@/components/ui/dropdown-menu";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {ActiveToggleDropdownItem, DeleteDropdownItem} from "@/app/admin/_components/ProductActions";
 
 export default function AdminProductsPage() {
     return (
@@ -67,7 +74,7 @@ async function ProductTable() {
                             : (
                                 <>
                                     <span className='sr-only'>Unavailable</span>
-                                    <XCircle/>
+                                    <XCircle className='stroke-destructive'/>
                                 </>
                             )
                         }
@@ -77,8 +84,21 @@ async function ProductTable() {
                     <TableCell>{formatNumber(product._count.orders)}</TableCell>
                     <TableCell>
                         <DropdownMenu>
-                            <MoreVertical/>
-                            <span className='sr-only'>Actions</span>
+                            <DropdownMenuTrigger>
+                                <MoreVertical/>
+                                <span className='sr-only'>Actions</span>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem asChild>
+                                    <a download href={`products/${product.id}/download`}>Download</a>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link href={`products/${product.id}/edit`}>Edit</Link>
+                                </DropdownMenuItem>
+                                <ActiveToggleDropdownItem id={product.id} isAvailableForPurchase={product.isAvailableForPurchase}/>
+                                <DropdownMenuSeparator/>
+                                <DeleteDropdownItem id={product.id} disabled={product._count.orders > 0}/>
+                            </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>
                 </TableRow>
