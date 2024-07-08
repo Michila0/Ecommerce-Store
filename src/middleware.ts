@@ -4,7 +4,10 @@ import {isValidPassword} from "./lib/isValidPassword";
 
 export async function middleware(req: NextRequest) {
     if ((await isAuthenticated(req)) === false) {
-        return new NextResponse("Unauthorized", {status: 401, headers: {'WWW-Authenticate': "Basic"}})
+        return new NextResponse("Unauthorized", {
+            status: 401,
+            headers: {'WWW-Authenticate': "Basic"},
+        })
     }
 }
 
@@ -17,17 +20,15 @@ async function isAuthenticated(req: NextRequest) {
         .toString()
         .split(':')
 
-    // isValidPassword(password, 'sdfsdf')
+    // isValidPassword(password, '1234')
     // return true
 
     return (
-        username === process.env.ADMIN_USERNAME &&
-        (await isValidPassword
-            (
+        username === process.env.ADMIN_USERNAME && //process.env.ADMIN_USERNAME
+        (await isValidPassword(
                 password,
                 process.env.HASHED_ADMIN_PASSWORD as string
-            )
-        )
+        ))
     )
 }
 
