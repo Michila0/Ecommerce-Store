@@ -1,10 +1,8 @@
-'use client'
-
-import {Nav, NavLink} from '@/components/Nav';
 import React from 'react';
+import {Nav, NavLink} from "@/components/Nav";
 
 export const dynamic = 'force-dynamic'
-function AdminLayout({children}: Readonly<{ children: React.ReactNode }>) {
+export default function Layout({children}: Readonly<{ children: React.ReactNode }>) {
     return (
         <>
             <Nav>
@@ -13,9 +11,6 @@ function AdminLayout({children}: Readonly<{ children: React.ReactNode }>) {
                 <NavLink href='/orders'>My Orders</NavLink>
             </Nav>
             <div className="container my-6">{children}</div>
-
         </>
     );
 }
-
-export default AdminLayout;
