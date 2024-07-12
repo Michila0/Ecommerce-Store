@@ -7,29 +7,26 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {ArrowRight} from "lucide-react";
 import {ProductCard, ProductCardSkeleton} from "@/components/ProductCard";
+import {cache} from "@/lib/cashe";
 
 
-function getMostPopularProducts() {
-    // await wait(2000)
+const getMostPopularProducts = cache(() => {
     return db.product.findMany({
         where: {isAvailableForPurchase: true},
         orderBy: {orders: {_count: 'desc'}},
         take: 6
     })
- }
+ }, ['/', 'getMostPopularProducts'], {revalidate: 60 * 60 * 24})
 
-function getNewestProducts() {
-    // await wait(2000)
+const getNewestProducts = cache(() =>{
     return db.product.findMany({
         where: {isAvailableForPurchase: true},
         orderBy: {createdAt: 'desc'},
         take: 6
     })
-}
+},['/', 'getNewestProducts'])
 
-// function wait(duration: number) {
-//     return new Promise(resolve => setTimeout(resolve, duration))
-// }
+
 
 export default function HomePage() {
     return (
